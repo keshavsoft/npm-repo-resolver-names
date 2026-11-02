@@ -1,0 +1,35 @@
+{
+  "name": "npm-repo-resolver-names",
+  "version": "1.0.0",
+  "description": "Recursively walk npm dependencies and collect authentic package names as a pure array of strings.",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "bin": {
+    "npm-repo-resolver-names": "cli/index.js"
+  },
+  "files": [
+    "src/",
+    "cli/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check cli/index.js && node --check src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keshavsoft/npm-repo-resolver-names.git"
+  },
+  "author": "KeshavSoft",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@npmcli/arborist": "^10.0.4"
+  }
+}
