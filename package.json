@@ -6,9 +6,8 @@
   "main": "./src/index.js",
   "exports": {
     ".": "./src/index.js",
-    "./v1": "./src/v1/index.js",
-    "./v2": "./src/v2/index.js",
-    "./v3": "./src/v3/index.js"
+    "./v3": "./src/v3/index.js",
+    "./v4": "./src/v4/index.js"
   },
   "bin": {
     "npm-repo-resolver-names": "cli/index.js"

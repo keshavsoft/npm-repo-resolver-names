@@ -1,24 +1,38 @@
 import { validatePackage } from "./1-package/index.js";
-import { traverseDependencies } from "./3-traverse/index.js";
+import { traverseGraph } from "./3-traverse/index.js";
 
 /**
- * npm-repo-resolver-names (v3)
+ * npm-repo-resolver-names (v4)
  * -------------------------------------------------------------
- * Recursively walks npm dependencies and collects all unique package names.
+ * Dual Interface:
+ *   1. collectNpmNames(packageSpec, options) -> Promise<string[]>
+ *      Returns the pure Array<string> of unique package names.
+ *      (Default for NPX CLI and simple string consumers).
  *
- * Story:
- *   Act 1 (1-package)      : Validates and parses the package input spec.
- *   Act 2 (2-dependencies) : Fetches immediate dependencies of a single package.
- *   Act 3 (3-traverse)     : Recursively loops through dependencies level-by-level.
+ *   2. collectNpmGraph(packageSpec, options) -> Promise<Record<string, string[]>>
+ *      Returns the in-memory dependency graph object.
+ *      (For downstream analytical repos like trees, metrics, and visualization).
  * -------------------------------------------------------------
  */
+
+export async function collectNpmGraph(packageSpec, options = {}) {
+  const target = validatePackage(packageSpec);
+  const onProgress = typeof options.onProgress === "function" ? options.onProgress : () => {};
+
+  onProgress({ stage: "resolving", packageSpec: target.spec });
+
+  const { graph } = await traverseGraph(target.name, options);
+  return graph;
+}
+
 export async function collectNpmNames(packageSpec, options = {}) {
   const target = validatePackage(packageSpec);
   const onProgress = typeof options.onProgress === "function" ? options.onProgress : () => {};
 
   onProgress({ stage: "resolving", packageSpec: target.spec });
 
-  return await traverseDependencies(target.name, options);
+  const { names } = await traverseGraph(target.name, options);
+  return names;
 }
 
 export default collectNpmNames;

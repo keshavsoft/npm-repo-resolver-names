@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { collectNpmNames } from "../src/index.js";
-import { validatePackage } from "../src/v1/validatePackage.js";
+import { collectNpmNames, collectNpmGraph } from "../src/index.js";
+import { validatePackage } from "../src/v4/1-package/index.js";
 
 test("validatePackage parses scopes, versions, and names", () => {
   const target = validatePackage("@keshavsoft/json-renderers@1.2.0");
@@ -21,3 +21,9 @@ test("collectNpmNames returns pure array of strings", async () => {
   }
 });
 
+test("collectNpmGraph returns in-memory dependency graph object", async () => {
+  const graph = await collectNpmGraph("is-number");
+  assert.ok(graph && typeof graph === "object");
+  assert.ok("is-number" in graph);
+  assert.ok(Array.isArray(graph["is-number"]));
+});

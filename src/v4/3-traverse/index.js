@@ -1,15 +1,22 @@
 import { fetchDependencies } from "../2-dependencies/index.js";
 
-export async function traverseDependencies(rootPackageName, options = {}) {
+/**
+ * Traverses npm dependencies recursively and builds an in-memory graph.
+ *
+ * @param {string} rootPackageName
+ * @param {object} options
+ * @returns {Promise<{ names: string[], graph: Record<string, string[]> }>}
+ */
+export async function traverseGraph(rootPackageName, options = {}) {
   const onProgress = typeof options.onProgress === "function" ? options.onProgress : () => {};
-  const visited = new Set();
+  const graph = {};
 
   async function walk(pkgName) {
-    if (!pkgName || visited.has(pkgName)) return;
-    visited.add(pkgName);
+    if (!pkgName || Object.prototype.hasOwnProperty.call(graph, pkgName)) return;
 
     // 1. Fetch immediate dependencies for current node
     const dependencies = await fetchDependencies(pkgName);
+    graph[pkgName] = dependencies;
     onProgress({ stage: "fetched", package: pkgName, count: dependencies.length });
 
     // 2. Feed dependencies as inputs into the next recursive level
@@ -18,10 +25,13 @@ export async function traverseDependencies(rootPackageName, options = {}) {
 
   await walk(rootPackageName);
 
-  const names = Array.from(visited);
+  const names = Object.keys(graph);
   onProgress({ stage: "names-collected", count: names.length, names });
-  return names;
+
+  return {
+    names,
+    graph
+  };
 }
 
-export default traverseDependencies;
-
+export default traverseGraph;

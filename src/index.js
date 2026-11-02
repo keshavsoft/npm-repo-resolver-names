@@ -1,1 +1,1 @@
-export { collectNpmNames, default } from "./v4/index.js";
+export { collectNpmNames, collectNpmGraph, default } from "./v5/index.js";
