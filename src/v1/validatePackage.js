@@ -31,3 +31,4 @@ export function validatePackage(packageSpec) {
 }
 
 export default validatePackage;
+

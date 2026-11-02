@@ -67,3 +67,4 @@ export async function collectNpmNames(packageSpec, options = {}) {
 }
 
 export default collectNpmNames;
+
