@@ -1,1 +1,1 @@
-export { collectNpmNames, validatePackage, default } from "./v1/index.js";
+export { collectNpmNames, validatePackage, default } from "./v2/index.js";
