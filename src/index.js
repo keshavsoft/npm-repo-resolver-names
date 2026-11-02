@@ -1,3 +1,1 @@
-export { collectNpmNames, manifestCache, default } from "./collectNpmNames.js";
-export { collectNpmNames as getNpmNames } from "./collectNpmNames.js";
-export { validatePackage } from "./validatePackage.js";
+export { collectNpmNames, default } from "./v1/index.js";

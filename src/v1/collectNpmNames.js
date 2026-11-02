@@ -4,8 +4,6 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import { validatePackage } from "./validatePackage.js";
 
-export const manifestCache = new Map();
-
 export async function collectNpmNames(packageSpec, options = {}) {
   const target = validatePackage(packageSpec);
   const onProgress = typeof options.onProgress === "function" ? options.onProgress : () => {};
@@ -47,16 +45,8 @@ export async function collectNpmNames(packageSpec, options = {}) {
       visited.add(key);
 
       const pkgName = node.package?.name ?? node.name;
-      const pkgVersion = node.package?.version ?? null;
-      const repository = node.package?.repository ?? null;
-
       if (pkgName) {
         namesSet.add(pkgName);
-        manifestCache.set(pkgName, {
-          name: pkgName,
-          version: pkgVersion,
-          repository
-        });
       }
 
       for (const edge of node.edgesOut.values()) {

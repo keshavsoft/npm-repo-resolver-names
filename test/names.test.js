@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validatePackage, collectNpmNames } from "../src/index.js";
+import { collectNpmNames } from "../src/index.js";
+import { validatePackage } from "../src/v1/validatePackage.js";
 
 test("validatePackage parses scopes, versions, and names", () => {
   const target = validatePackage("@keshavsoft/json-renderers@1.2.0");
@@ -19,3 +20,4 @@ test("collectNpmNames returns pure array of strings", async () => {
     assert.equal(typeof name, "string");
   }
 });
+

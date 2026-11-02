@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import fs from "node:fs/promises";
-import { collectNpmNames, validatePackage } from "../src/index.js";
+import { collectNpmNames } from "../src/index.js";
+import { validatePackage } from "../src/v1/validatePackage.js";
 
 const packageJson = JSON.parse(
   await fs.readFile(new URL("../package.json", import.meta.url), "utf8")
@@ -97,3 +98,4 @@ main().catch((err) => {
   console.error(`\nnpm-repo-resolver-names error: ${err.message}\n`);
   process.exitCode = 1;
 });
+
